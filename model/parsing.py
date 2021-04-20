@@ -73,7 +73,7 @@ def add_train_args(parser: ArgumentParser):
                         help='How much information retained in skip connections')
 
     # Attention arguments
-    parser.add_argument('--attn_type', type=str, default='gat', choices=['gat', 'tang']
+    parser.add_argument('--attn_type', type=str, default='gat', choices=['gat', 'tang'],
                         help='Attention type. GAT or that used in Tang 2020')
     parser.add_argument('--gat_act', type=str, default='leakyrelu',
                         choices=['leakyrelu', 'relu'], help='Activation function used in GAT')
