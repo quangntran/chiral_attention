@@ -16,3 +16,27 @@ python train.py --data_path 'data/d4_docking/d4_docking.csv' --split_path 'data/
 !pip install -q torch-sparse -f https://pytorch-geometric.com/whl/torch-1.7.0+cu101.html
 !pip install -q torch-geometric
 ```
+On Google Colab: 
+```
+# Add this in a Google Colab cell to install the correct version of Pytorch Geometric.
+import torch
+
+def format_pytorch_version(version):
+  return version.split('+')[0]
+
+TORCH_version = torch.__version__
+TORCH = format_pytorch_version(TORCH_version)
+
+def format_cuda_version(version):
+  return 'cu' + version.replace('.', '')
+
+CUDA_version = torch.version.cuda
+CUDA = format_cuda_version(CUDA_version)
+
+!pip install torch-scatter     -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
+!pip install torch-sparse      -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
+!pip install torch-cluster     -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
+!pip install torch-spline-conv -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
+!pip install torch-geometric
+!pip install kora
+```
