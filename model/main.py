@@ -11,8 +11,8 @@ import copy
 from rdkit.Chem.Draw import SimilarityMaps
 import csv
 
-from mp_layers import *
-from tetra import *
+from model.mp_layers import *
+from model.tetra import *
 from visualization import visualize_atom_attention
 
 SUPPORTED_ATTN_TYPE =  ['gat', 'tang']

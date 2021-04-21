@@ -1,0 +1,6 @@
+# Mac directory files
+*.DS_Store
+
+# Py cache
+stereonet/__pycache__
+Stereonet/checkpoint

@@ -10,7 +10,7 @@ import copy
 
 from rdkit.Chem.Draw import SimilarityMaps
 import csv
-from tetra import *
+from model.tetra import *
 
 class GCNConv(MessagePassing):
     def __init__(self, args):

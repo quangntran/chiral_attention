@@ -4,6 +4,8 @@ from data_model.data import construct_loader
 from util import Standardizer, create_logger, get_loss_func
 from model.main import GNN
 import csv
+import numpy as np
+from model.training import *
 
 args = parse_train_args()
 torch.manual_seed(args.seed)
