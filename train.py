@@ -111,6 +111,7 @@ f.close()
 
 # load best model
 model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(args.device)
+print('Model architecture: ', model)
 state_dict = torch.load(os.path.join(args.log_dir, 'best_model'), map_location=args.device)
 model.load_state_dict(state_dict)
 
