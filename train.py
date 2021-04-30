@@ -63,7 +63,7 @@ for epoch in range(args.epoch, args.n_epochs):
     # if not vwriteral_acc is None: writer.add_scalar("Acc/val", val_acc, epoch)
 
     # write logs
-    f= open(args.log_dir+"/log.txt","w+")
+    f= open(args.log_dir+"/log.txt","a")
     f.write(f"Epoch {epoch}: Training Loss {train_loss}")
     if args.task == 'classification':
       f.write(f"Epoch {epoch}: Training Classification Accuracy {train_acc}")

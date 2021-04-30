@@ -4,3 +4,7 @@
 # Py cache
 __pycache__
 checkpoint
+
+# test files
+*_test.py
+*_test/*

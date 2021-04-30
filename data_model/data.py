@@ -2,6 +2,7 @@
 
 from argparse import Namespace
 from typing import List, Tuple, Union
+from kora.install.rdkit.Chem.rdchem import ChiralType
 
 from rdkit import Chem
 from rdkit.Chem.rdchem import ChiralType
