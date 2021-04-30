@@ -272,10 +272,8 @@ class MolDataset(Dataset):
         else:
             self.split = list(range(len(smiles)))  # fix this
         # print(len(smiles))
-        # self.smiles = [smiles[i] for i in self.split]
-        # self.labels = [labels[i] for i in self.split]
-        self.smiles = [smiles[0] for i in self.split]
-        self.labels = [labels[0] for i in self.split]
+        self.smiles = [smiles[i] for i in self.split]
+        self.labels = [labels[i] for i in self.split]
         self.data_map = {k: v for k, v in zip(range(len(self.smiles)), self.split)}
         self.args = args
 
