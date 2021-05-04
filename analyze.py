@@ -27,6 +27,8 @@ if __name__ == "__main__":
     # val predictions
     csv_path = os.path.join(args.prediction_data_path, 'preds_on_val.csv')
     df = pd.read_csv(csv_path)
-    print(np.array(df['label']))
+    residual = np.array(df['label']) - np.array(df['prediction'])
+    plt.hist(residual)
+    
     
     
