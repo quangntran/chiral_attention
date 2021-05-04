@@ -23,11 +23,11 @@ where
 ## Dependency
 Reinstall PyTorch version:
 ```
-!pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 Install PyTorch Geometric:
 ```
-!pip install kora
+pip install kora
 # Add this in a Google Colab cell to install the correct version of Pytorch Geometric.
 import torch
 
@@ -43,10 +43,10 @@ def format_cuda_version(version):
 CUDA_version = torch.version.cuda
 CUDA = format_cuda_version(CUDA_version)
 print(TORCH, CUDA)
-!pip install torch-scatter     -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
-!pip install torch-sparse      -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
-!pip install torch-cluster     -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
-!pip install torch-spline-conv -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
-!pip install torch-geometric 
+pip install torch-scatter     -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
+pip install torch-sparse      -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
+pip install torch-cluster     -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
+pip install torch-spline-conv -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
+pip install torch-geometric 
 ```
 
