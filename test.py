@@ -28,7 +28,8 @@ model.load_state_dict(state_dict)
 def train_and_save_predictions(loader, preds_path, viz_dir=None, viz_ids=None):
     # predict on train data
     ys, preds, loss_val, acc, auc = test(model, loader, loss, stdzer, args.device, args.task, viz_dir=viz_dir, viz_ids=viz_ids)
-
+    print(ys)
+    print(preds)
     # save predictions
     smiles = loader.dataset.smiles
 #    preds_path = os.path.join(args.log_dir, 'preds_on_train.csv')
