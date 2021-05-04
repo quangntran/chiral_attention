@@ -9,6 +9,17 @@ To run the optimal model, run the following command:
 ```
 python train.py --data_path 'data/d4_docking/d4_docking.csv' --split_path 'data/d4_docking/full/split0.npy'  --log_dir 'log' --checkpoint_dir 'checkpoint' --n_epochs 100 --batch_size 64 --warmup_epochs 0 --gnn_type gcn --hidden_size 32 --depth 2 --dropout 0 --message tetra_permute_concat --n_layers 2 --attn_type gat --gat_act leakyrelu --gat_depth 2 --heads 8 --concat
 ```
+
+To test:
+```
+python stereonet/test.py --no_shuffle --data_path 'stereonet/data/d4_docking/d4_docking.csv' --split_path 'stereonet/data/d4_docking/full/split0.npy'  --log_dir 'gdrive/My Drive/Colab Notebooks/gcnn/log-s9' --checkpoint_dir 'gdrive/My Drive/Colab Notebooks/gcnn/log-s9' --model_path 'gdrive/My Drive/Colab Notebooks/gcnn/log-s9/best_model' --eval_output_dir 'gdrive/My Drive/Colab Notebooks/gcnn/log-s9/viz_best_model' --n_epochs 100 --batch_size 64 --warmup_epochs 2 --gnn_type gin --hidden_size 32 --depth 2 --dropout 0 --message tetra_permute_concat --n_layers 2 --attn_type gat --gat_act leakyrelu --gat_depth 2 --heads 3
+```
+where
+* `--no_shuffle`: does not shuffle the dataset
+* `--model_path` is the path to the model to load (in the example above, it's the `best_model`-- but it could be, for example, 'gdrive/My Drive/Colab Notebooks/gcnn/log-s9/1_model'
+* `--eval_output_dir` is where the outputs are stored. These include: the predictions (and the targets), the visualization results
+* The other parameters should be kept the same as training parameters (`gnn_type`, `hidden_size`, etc.)
+
 ## Dependency
 Reinstall PyTorch version:
 ```
@@ -38,3 +49,4 @@ print(TORCH, CUDA)
 !pip install torch-spline-conv -f https://pytorch-geometric.com/whl/torch-{TORCH}+{CUDA}.html
 !pip install torch-geometric 
 ```
+
