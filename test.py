@@ -32,12 +32,14 @@ def train_and_save_predictions(loader, preds_path):
     # save predictions
     smiles = loader.dataset.smiles
 #    preds_path = os.path.join(args.log_dir, 'preds_on_train.csv')
-    pd.DataFrame(list(zip(smiles, train_ys, train_preds)), columns=['smiles', 'label', 'prediction']).to_csv(preds_path, index=False)
+    pd.DataFrame(list(zip(smiles, ys, preds)), columns=['smiles', 'label', 'prediction']).to_csv(preds_path, index=False)
 
-
+#def visualize_and_save():
+    
 # predict on train data
+print('Evaluation on training data')
 train_ys, train_preds, train_loss, train_acc, train_auc = train_and_save_predictions(train_loader, preds_path=os.path.join(args.log_dir, 'preds_on_train.csv'))
 
 # predict on val data
+print('Evaluation on validating data')
 val_ys, val_preds, val_loss, val_acc, val_auc = train_and_save_predictions(val_loader, preds_path=os.path.join(args.log_dir, 'preds_on_val.csv'))
-
