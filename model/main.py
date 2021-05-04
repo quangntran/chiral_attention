@@ -257,7 +257,7 @@ class GNN(nn.Module):
           # num_nodes = int(att_weights[0].max())+1
           preds = stdzer(output, rev=True)
           if self.attn_type != "tang":
-            weights= torch.sparse.FloatTensor(att_weights[0], att_weights[1], torch.Size([data.num_nodes,data.num_nodes, args.heads])).to_dense().sum(dim=1)
+            weights= torch.sparse.FloatTensor(att_weights[0], att_weights[1], torch.Size([data.num_nodes,data.num_nodes, self.args.heads])).to_dense().sum(dim=1)
             weights = weights.cpu().data.numpy()
           else:
             weights = att_weights.cpu().data.numpy()
