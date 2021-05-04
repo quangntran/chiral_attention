@@ -18,10 +18,11 @@ def get_lr(optimizer):
 # create path to save logs
 if not os.path.exists(args.log_dir):
   os.makedirs(args.log_dir)
+  args.checkpoint_dir = args.log_dir
 
-# create path to save checkpoint
-if not os.path.exists(args.checkpoint_dir):
-  os.makedirs(args.checkpoint_dir)
+# # create path to save checkpoint
+# if not os.path.exists(args.checkpoint_dir):
+#   os.makedirs(args.checkpoint_dir)
 
 train_loader, val_loader = construct_loader(args)
 mean = train_loader.dataset.mean
