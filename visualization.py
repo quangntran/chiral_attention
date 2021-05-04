@@ -9,6 +9,7 @@ import numpy as np
 
 from rdkit import Chem
 from rdkit.Chem.rdchem import ChiralType
+from rdkit.Chem.Draw import SimilarityMaps
 """# **Visualization function**
 Functions to (1) output png files and (2) write csv of groundtruth and preds for easy tracing
 """
@@ -22,7 +23,7 @@ def visualize_atom_attention(viz_dir: str, smiles: str, attention_weights, heads
     :param num_atoms: The number of atoms in this molecule.
     :param attention_weights: A num_atoms x num_atoms PyTorch FloatTensor containing attention weights.
     """
-
+    
     mol = Chem.MolFromSmiles(smiles)
     
     os.makedirs(viz_dir, exist_ok=True)
