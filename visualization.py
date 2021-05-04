@@ -10,6 +10,9 @@ import numpy as np
 from rdkit import Chem
 from rdkit.Chem.rdchem import ChiralType
 from rdkit.Chem.Draw import SimilarityMaps
+import matplotlib
+import matplotlib.pyplot as plt
+
 """# **Visualization function**
 Functions to (1) output png files and (2) write csv of groundtruth and preds for easy tracing
 """
