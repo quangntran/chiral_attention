@@ -22,6 +22,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Directory where model checkpoints will be saved')
     parser.add_argument('--model_path', type=str, default=None,
                         help='Path to model file to load for evaluation time')
+    parser.add_argument('--eval_output_dir', type=str, default=None,
+                        help='Directory to store outputs of evaluation, including predictions and attention visualization')
 
 
     # Training arguments
