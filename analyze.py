@@ -29,6 +29,6 @@ if __name__ == "__main__":
     df = pd.read_csv(csv_path)
     residual = np.array(df['label']) - np.array(df['prediction'])
     plt.hist(residual)
-    plt.savefig(args.output_path)
+    plt.savefig(os.path.join(args.prediction_data_path, 'val_residual.png'))
     
     
