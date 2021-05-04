@@ -33,6 +33,8 @@ if __name__ == "__main__":
     args = parse_train_args()
     # val predictions
     residual_plot(args, 'preds_on_val.csv', 'val_residual.png')
+    # train predictions
+    residual_plot(args, 'preds_on_train.csv', 'train_residual.png')
     
     
     
