@@ -19,10 +19,10 @@ stdzer = Standardizer(mean, std, args.task)
 loss = get_loss_func(args)
 
 
-# load best model
+# load model
 model = GNN(args, train_loader.dataset.num_node_features, train_loader.dataset.num_edge_features).to(args.device)
 print('Model architecture: ', model)
-state_dict = torch.load(os.path.join(args.log_dir, 'best_model'), map_location=args.device)
+state_dict = torch.load(args.model_path, map_location=args.device)
 model.load_state_dict(state_dict)
 
 def train_and_save_predictions(loader, preds_path, viz_dir=None, viz_ids=None):
