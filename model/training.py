@@ -69,7 +69,7 @@ def test(model, loader, loss, stdzer, device, task, viz_dir=None):
         graph_num= 1
         for data in tqdm(loader, total=len(loader)):
             data = data.to(device)
-            out = model(data, viz_dir=viz_dir, num_graphs_processed=graph_num)
+            out = model(data, viz_dir=viz_dir, num_graphs_processed=graph_num, stdzer=stdzer)
             pred = stdzer(out, rev=True)
             error += loss(pred, data.y).item()
             preds.extend(pred.cpu().detach().tolist())

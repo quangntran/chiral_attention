@@ -150,7 +150,7 @@ class GNN(nn.Module):
 
 
 
-    def forward(self, data, viz_dir=None,  num_graphs_processed=0):
+    def forward(self, data, viz_dir=None,  num_graphs_processed=0, stdzer=None):
         x, edge_index, edge_attr, batch, parity_atoms = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms
         row, col = edge_index
         # print('='*20)
