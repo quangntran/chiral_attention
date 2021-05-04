@@ -25,13 +25,19 @@ print('Model architecture: ', model)
 state_dict = torch.load(os.path.join(args.log_dir, 'best_model'), map_location=args.device)
 model.load_state_dict(state_dict)
 
+def train_and_save_predictions(loader, preds_path):
+    # predict on train data
+    ys, preds, loss, acc, auc = test(model, loader, loss, stdzer, args.device, args.task, viz_dir=None)
+
+    # save predictions
+    smiles = loader.dataset.smiles
+#    preds_path = os.path.join(args.log_dir, 'preds_on_train.csv')
+    pd.DataFrame(list(zip(smiles, train_ys, train_preds)), columns=['smiles', 'label', 'prediction']).to_csv(preds_path, index=False)
+
 
 # predict on train data
-train_ys, train_preds, train_loss, train_acc, train_auc = test(model, train_loader, loss, stdzer, args.device, args.task, viz_dir=None)
+train_ys, train_preds, train_loss, train_acc, train_auc = train_and_save_predictions(train_loader, preds_path=os.path.join(args.log_dir, 'preds_on_train.csv'))
 
-train_residual = train_ys - train_preds
-plt.plot(train_residual)
-plt.savefig(args.log_dir)
-
-
+# predict on val data
+val_ys, val_preds, val_loss, val_acc, val_auc = train_and_save_predictions(val_loader, preds_path=os.path.join(args.log_dir, 'preds_on_val.csv'))
 
