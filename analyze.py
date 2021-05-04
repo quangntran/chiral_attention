@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from argparse import ArgumentParser, Namespace
 import os
+import numpy as np
 
 def add_args(parser: ArgumentParser):
     # General arguments
