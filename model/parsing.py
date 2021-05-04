@@ -29,6 +29,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Path to model to load as checkpoint when resuming training')
     parser.add_argument('--checkpoint_dir', type=str,
                         help='Path to save checkpoint model')
+    parser.add_argument('--viz_dir', type=str,
+                        help='Path to save attention visualization')
 
     parser.add_argument('--n_epochs', type=int, default=60,
                         help='Number of epochs to run')
