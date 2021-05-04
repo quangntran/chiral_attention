@@ -27,7 +27,7 @@ model.load_state_dict(state_dict)
 
 
 # predict on train data
-train_ys, train_preds, train_loss, train_acc, train_auc = test(model, train_loader, loss, stdzer, args.device, args.task, viz_dir=args.viz_dir)
+train_ys, train_preds, train_loss, train_acc, train_auc = test(model, train_loader, loss, stdzer, args.device, args.task, viz_dir=None)
 
 train_residual = train_ys - train_preds
 plt.plot(train_residual)
