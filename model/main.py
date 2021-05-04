@@ -15,11 +15,14 @@ from model.mp_layers import *
 from model.tetra import *
 from visualization import visualize_atom_attention
 
+import os
+
 SUPPORTED_ATTN_TYPE =  ['gat', 'tang']
 
 class GNN(nn.Module):
     def __init__(self, args, num_node_features, num_edge_features):
         super(GNN, self).__init__()
+        self.args = args
         if args.attn_type == 'tang' and args.heads != 1:
           raise RuntimeError('tang attention must have heads = 1.')
         self.attn_type = args.attn_type
@@ -150,7 +153,7 @@ class GNN(nn.Module):
 
 
 
-    def forward(self, data, viz_dir=None,  num_graphs_processed=0):
+    def forward(self, data, viz_dir=None,  num_graphs_processed=0, stdzer=None, viz_ids=None):
         x, edge_index, edge_attr, batch, parity_atoms = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms
         row, col = edge_index
         # print('='*20)
@@ -254,27 +257,55 @@ class GNN(nn.Module):
             output = torch.sigmoid(mol_vec).squeeze(-1)
 
         if not viz_dir is None:
-          # num_nodes = int(att_weights[0].max())+1
-          preds = stdzer(output, rev=True)
-          if self.attn_type != "tang":
-            weights= torch.sparse.FloatTensor(att_weights[0], att_weights[1], torch.Size([data.num_nodes,data.num_nodes, args.heads])).to_dense().sum(dim=1)
-            weights = weights.cpu().data.numpy()
-          else:
-            weights = att_weights.cpu().data.numpy()
-
+          viz_this_batch = False
           for graph_ind in range(data.num_graphs):
-            smiles = data.smiles[graph_ind]
-            # get attention weights for this graph
-            att_w_this_graph = weights[torch.where(batch==graph_ind)[0].cpu().data.numpy()]
+            if graph_ind + num_graphs_processed in viz_ids:
+                viz_this_batch = True 
+          if viz_this_batch:
+              # num_nodes = int(att_weights[0].max())+1
+              preds = stdzer(output, rev=True)
+              if self.attn_type != "tang":
+                weights= torch.sparse.FloatTensor(att_weights[0], att_weights[1], torch.Size([data.num_nodes,data.num_nodes, self.args.heads])).to_dense().sum(dim=1)
+                weights = weights.cpu().data.numpy()
+              else:
+                weights = att_weights.cpu().data.numpy()
 
-            visualize_atom_attention(viz_dir=viz_dir + f'{num_graphs_processed+graph_ind}',
-                                     smiles=smiles,
-                                     attention_weights=att_w_this_graph,
-                                     heads=self.heads)
 
-            y_this_graph = float(data.y[graph_ind])
-            pred_this_graph = float(preds[graph_ind])
-            num_atoms = att_w_this_graph.shape[0]
-            generate_info_file(viz_dir + f'{num_graphs_processed+graph_ind}', viz_dir,num_graphs_processed+graph_ind , num_atoms, smiles, y_this_graph, pred_this_graph)
+              for graph_ind in range(data.num_graphs):
+                if not num_graphs_processed+graph_ind in viz_ids:
+                    continue
+    #          for graph_ind in [0,1,2,3]:
+                smiles = data.smiles[graph_ind]
+                # get attention weights for this graph
+                att_w_this_graph = weights[torch.where(batch==graph_ind)[0].cpu().data.numpy()]
+
+                visualize_atom_attention(viz_dir=viz_dir + f'{num_graphs_processed+graph_ind}',
+                                         smiles=smiles,
+                                         attention_weights=att_w_this_graph,
+                                         heads=self.heads)
+
+                y_this_graph = float(data.y[graph_ind])
+                pred_this_graph = float(preds[graph_ind])
+                num_atoms = att_w_this_graph.shape[0]
+                generate_info_file(viz_dir + f'{num_graphs_processed+graph_ind}', viz_dir,num_graphs_processed+graph_ind , num_atoms, smiles, y_this_graph, pred_this_graph)
 
         return output
+
+    
+def generate_info_file(viz_dir, csv_dir, row_order, num_atoms, smiles, y, pred):
+   os.makedirs(viz_dir, exist_ok=True)
+   f= open(viz_dir+"/info.txt","w+")
+   f.write(f'Number of atoms:{num_atoms}\n')
+   f.write(smiles)
+   f.write(f'Groundtruth: {y:.3f}\n')
+   f.write(f'Predicted: {pred:.3f}')
+   f.close()
+   #wtite to csv
+   with open(csv_dir+'0info.csv', mode='a') as csvfile:
+    # creating a csv writer object  
+    csvwriter = csv.writer(csvfile)  
+    # writing the fields  
+    if row_order == 1:
+      csvwriter.writerow(['order', 'groundtruth', 'pred'])  
+    # writing the data rows  
+    csvwriter.writerow([row_order, y, pred])

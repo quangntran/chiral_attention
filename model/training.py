@@ -60,7 +60,7 @@ def eval(model, loader, loss, stdzer, device, task):
         return error / len(loader.dataset), correct / len(loader.dataset)
 
 
-def test(model, loader, loss, stdzer, device, task, viz_dir=None):
+def test(model, loader, loss, stdzer, device, task, viz_dir=None, viz_ids=None):
     model.eval()
     error, correct = 0, 0
 
@@ -69,7 +69,7 @@ def test(model, loader, loss, stdzer, device, task, viz_dir=None):
         graph_num= 1
         for data in tqdm(loader, total=len(loader)):
             data = data.to(device)
-            out = model(data, viz_dir=viz_dir, num_graphs_processed=graph_num)
+            out = model(data, viz_dir=viz_dir, viz_ids=viz_ids, num_graphs_processed=graph_num, stdzer=stdzer)
             pred = stdzer(out, rev=True)
             error += loss(pred, data.y).item()
             preds.extend(pred.cpu().detach().tolist())
@@ -77,7 +77,7 @@ def test(model, loader, loss, stdzer, device, task, viz_dir=None):
             if task == 'classification':
                 predicted = torch.round(out.data)
                 correct += (predicted == data.y).sum().double()
-                ys.extend(data.y.cpu().detach().tolist())
+            ys.extend(data.y.cpu().detach().tolist())
             graph_num += int(data.num_graphs)
 
     if task == 'regression':

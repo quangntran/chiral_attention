@@ -1,3 +1,17 @@
+import os, math, torch, kora.install.rdkit, pandas as pd
+#from model.parsing import parse_train_args
+#from data_model.data import construct_loader
+#from util import Standardizer, create_logger, get_loss_func
+#from model.main import GNN
+import csv
+import numpy as np
+#from model.training import *
+
+from rdkit import Chem
+from rdkit.Chem.rdchem import ChiralType
+from rdkit.Chem.Draw import SimilarityMaps
+import matplotlib
+import matplotlib.pyplot as plt
 
 """# **Visualization function**
 Functions to (1) output png files and (2) write csv of groundtruth and preds for easy tracing
@@ -12,7 +26,7 @@ def visualize_atom_attention(viz_dir: str, smiles: str, attention_weights, heads
     :param num_atoms: The number of atoms in this molecule.
     :param attention_weights: A num_atoms x num_atoms PyTorch FloatTensor containing attention weights.
     """
-
+    
     mol = Chem.MolFromSmiles(smiles)
     
     os.makedirs(viz_dir, exist_ok=True)

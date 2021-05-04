@@ -20,6 +20,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Path to .npy file containing train/val/test split indices')
     parser.add_argument('--log_dir', type=str, default=None,
                         help='Directory where model checkpoints will be saved')
+    parser.add_argument('--model_path', type=str, default=None,
+                        help='Path to model file to load for evaluation time')
 
 
     # Training arguments
@@ -29,6 +31,8 @@ def add_train_args(parser: ArgumentParser):
                         help='Path to model to load as checkpoint when resuming training')
     parser.add_argument('--checkpoint_dir', type=str,
                         help='Path to save checkpoint model')
+    parser.add_argument('--viz_dir', type=str,
+                        help='Path to save attention visualization')
 
     parser.add_argument('--n_epochs', type=int, default=60,
                         help='Number of epochs to run')
