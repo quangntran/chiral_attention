@@ -27,7 +27,7 @@ model.load_state_dict(state_dict)
 
 def train_and_save_predictions(loader, preds_path, viz_dir=None):
     # predict on train data
-    ys, preds, loss_val, acc, auc = test(model, loader, loss, stdzer, args.device, args.task, viz_dir=viz_dir)
+    ys, preds, loss_val, acc, auc = test(model, loader, loss, stdzer, args.device, args.task, viz_dir=viz_dir, viz_ids=[1,2,3,4])
 
     # save predictions
     smiles = loader.dataset.smiles

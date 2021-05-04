@@ -153,7 +153,7 @@ class GNN(nn.Module):
 
 
 
-    def forward(self, data, viz_dir=None,  num_graphs_processed=0, stdzer=None):
+    def forward(self, data, viz_dir=None,  num_graphs_processed=0, stdzer=None, viz_ids=None):
         x, edge_index, edge_attr, batch, parity_atoms = data.x, data.edge_index, data.edge_attr, data.batch, data.parity_atoms
         row, col = edge_index
         # print('='*20)
@@ -257,30 +257,37 @@ class GNN(nn.Module):
             output = torch.sigmoid(mol_vec).squeeze(-1)
 
         if not viz_dir is None:
-          # num_nodes = int(att_weights[0].max())+1
-          preds = stdzer(output, rev=True)
-          if self.attn_type != "tang":
-            weights= torch.sparse.FloatTensor(att_weights[0], att_weights[1], torch.Size([data.num_nodes,data.num_nodes, self.args.heads])).to_dense().sum(dim=1)
-            weights = weights.cpu().data.numpy()
-          else:
-            weights = att_weights.cpu().data.numpy()
-            
-        
-#          for graph_ind in range(data.num_graphs):
-          for graph_ind in [0,1,2,3]:
-            smiles = data.smiles[graph_ind]
-            # get attention weights for this graph
-            att_w_this_graph = weights[torch.where(batch==graph_ind)[0].cpu().data.numpy()]
+          viz_this_batch = False
+          for graph_ind in range(data.num_graphs):
+            if graph_ind + num_graphs_processed in viz_ids:
+                viz_this_batch = True 
+          if viz_this_batch:
+              # num_nodes = int(att_weights[0].max())+1
+              preds = stdzer(output, rev=True)
+              if self.attn_type != "tang":
+                weights= torch.sparse.FloatTensor(att_weights[0], att_weights[1], torch.Size([data.num_nodes,data.num_nodes, self.args.heads])).to_dense().sum(dim=1)
+                weights = weights.cpu().data.numpy()
+              else:
+                weights = att_weights.cpu().data.numpy()
 
-            visualize_atom_attention(viz_dir=viz_dir + f'{num_graphs_processed+graph_ind}',
-                                     smiles=smiles,
-                                     attention_weights=att_w_this_graph,
-                                     heads=self.heads)
 
-            y_this_graph = float(data.y[graph_ind])
-            pred_this_graph = float(preds[graph_ind])
-            num_atoms = att_w_this_graph.shape[0]
-            generate_info_file(viz_dir + f'{num_graphs_processed+graph_ind}', viz_dir,num_graphs_processed+graph_ind , num_atoms, smiles, y_this_graph, pred_this_graph)
+              for graph_ind in range(data.num_graphs):
+                if not num_graphs_processed+graph_ind in viz_ids:
+                    continue
+    #          for graph_ind in [0,1,2,3]:
+                smiles = data.smiles[graph_ind]
+                # get attention weights for this graph
+                att_w_this_graph = weights[torch.where(batch==graph_ind)[0].cpu().data.numpy()]
+
+                visualize_atom_attention(viz_dir=viz_dir + f'{num_graphs_processed+graph_ind}',
+                                         smiles=smiles,
+                                         attention_weights=att_w_this_graph,
+                                         heads=self.heads)
+
+                y_this_graph = float(data.y[graph_ind])
+                pred_this_graph = float(preds[graph_ind])
+                num_atoms = att_w_this_graph.shape[0]
+                generate_info_file(viz_dir + f'{num_graphs_processed+graph_ind}', viz_dir,num_graphs_processed+graph_ind , num_atoms, smiles, y_this_graph, pred_this_graph)
 
         return output
 
