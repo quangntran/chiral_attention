@@ -18,7 +18,6 @@ def parse_train_args() -> Namespace:
     parser = ArgumentParser()
     add_args(parser)
     args = parser.parse_args()
-    modify_train_args(args)
 
     return args
 
