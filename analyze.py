@@ -21,14 +21,18 @@ def parse_train_args() -> Namespace:
     args = parser.parse_args()
 
     return args
-
+def residual_plot(args, filename, plotname):
+    # val predictions
+    csv_path = os.path.join(args.prediction_data_path, filename)
+    df = pd.read_csv(csv_path)
+    residual = np.array(df['label']) - np.array(df['prediction'])
+    plt.hist(residual, bins=20)
+    plt.savefig(os.path.join(args.prediction_data_path, plotname))
+    
 if __name__ == "__main__":
     args = parse_train_args()
     # val predictions
-    csv_path = os.path.join(args.prediction_data_path, 'preds_on_val.csv')
-    df = pd.read_csv(csv_path)
-    residual = np.array(df['label']) - np.array(df['prediction'])
-    plt.hist(residual)
-    plt.savefig(os.path.join(args.prediction_data_path, 'val_residual.png'))
+    residual_plot(args, 'preds_on_val.csv', 'val_residual.png')
+    
     
     
