@@ -20,6 +20,7 @@ SUPPORTED_ATTN_TYPE =  ['gat', 'tang']
 class GNN(nn.Module):
     def __init__(self, args, num_node_features, num_edge_features):
         super(GNN, self).__init__()
+        self.args = args
         if args.attn_type == 'tang' and args.heads != 1:
           raise RuntimeError('tang attention must have heads = 1.')
         self.attn_type = args.attn_type
