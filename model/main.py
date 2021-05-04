@@ -15,6 +15,8 @@ from model.mp_layers import *
 from model.tetra import *
 from visualization import visualize_atom_attention
 
+import os
+
 SUPPORTED_ATTN_TYPE =  ['gat', 'tang']
 
 class GNN(nn.Module):
