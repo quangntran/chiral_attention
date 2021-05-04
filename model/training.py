@@ -77,7 +77,7 @@ def test(model, loader, loss, stdzer, device, task, viz_dir=None, viz_ids=None):
             if task == 'classification':
                 predicted = torch.round(out.data)
                 correct += (predicted == data.y).sum().double()
-                ys.extend(data.y.cpu().detach().tolist())
+            ys.extend(data.y.cpu().detach().tolist())
             graph_num += int(data.num_graphs)
 
     if task == 'regression':
