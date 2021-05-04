@@ -279,3 +279,22 @@ class GNN(nn.Module):
             generate_info_file(viz_dir + f'{num_graphs_processed+graph_ind}', viz_dir,num_graphs_processed+graph_ind , num_atoms, smiles, y_this_graph, pred_this_graph)
 
         return output
+
+    
+def generate_info_file(viz_dir, csv_dir, row_order, num_atoms, smiles, y, pred):
+   os.makedirs(viz_dir, exist_ok=True)
+   f= open(viz_dir+"/info.txt","w+")
+   f.write(f'Number of atoms:{num_atoms}\n')
+   f.write(smiles)
+   f.write(f'Groundtruth: {y:.3f}\n')
+   f.write(f'Predicted: {pred:.3f}')
+   f.close()
+   #wtite to csv
+   with open(csv_dir+'0info.csv', mode='a') as csvfile:
+    # creating a csv writer object  
+    csvwriter = csv.writer(csvfile)  
+    # writing the fields  
+    if row_order == 1:
+      csvwriter.writerow(['order', 'groundtruth', 'pred'])  
+    # writing the data rows  
+    csvwriter.writerow([row_order, y, pred])
