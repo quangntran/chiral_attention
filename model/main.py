@@ -264,8 +264,10 @@ class GNN(nn.Module):
             weights = weights.cpu().data.numpy()
           else:
             weights = att_weights.cpu().data.numpy()
-
-          for graph_ind in range(data.num_graphs):
+            
+        
+#          for graph_ind in range(data.num_graphs):
+          for graph_ind in [0,1,2,3]:
             smiles = data.smiles[graph_ind]
             # get attention weights for this graph
             att_w_this_graph = weights[torch.where(batch==graph_ind)[0].cpu().data.numpy()]
