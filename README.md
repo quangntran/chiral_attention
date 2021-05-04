@@ -16,9 +16,14 @@ python stereonet/test.py --no_shuffle --data_path 'stereonet/data/d4_docking/d4_
 ```
 where
 * `--no_shuffle`: does not shuffle the dataset
-* `--model_path` is the path to the model to load (in the example above, it's the `best_model`-- but it could be, for example, 'gdrive/My Drive/Colab Notebooks/gcnn/log-s9/1_model'
+* `--model_path` is the path to the model to load (in the example above, it's the `best_model`-- but it could be, for example, `'gdrive/My Drive/Colab Notebooks/gcnn/log-s9/1_model'`)
 * `--eval_output_dir` is where the outputs are stored. These include: the predictions (and the targets), the visualization results
 * The other parameters should be kept the same as training parameters (`gnn_type`, `hidden_size`, etc.)
+
+To do residual analysis:
+```
+python stereonet/analyze.py --prediction_data_path 'gdrive/My Drive/Colab Notebooks/gcnn/log-s9/viz_best_model' --output_path 'gdrive/My Drive/Colab Notebooks/gcnn/log-s9/viz_best_model'
+```
 
 ## Dependency
 Reinstall PyTorch version:
