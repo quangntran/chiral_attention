@@ -25,9 +25,9 @@ print('Model architecture: ', model)
 state_dict = torch.load(os.path.join(args.log_dir, 'best_model'), map_location=args.device)
 model.load_state_dict(state_dict)
 
-def train_and_save_predictions(loader, preds_path, viz_dir=None):
+def train_and_save_predictions(loader, preds_path, viz_dir=None, viz_ids=None):
     # predict on train data
-    ys, preds, loss_val, acc, auc = test(model, loader, loss, stdzer, args.device, args.task, viz_dir=viz_dir, viz_ids=range(1,100))
+    ys, preds, loss_val, acc, auc = test(model, loader, loss, stdzer, args.device, args.task, viz_dir=viz_dir, viz_ids=viz_ids)
 
     # save predictions
     smiles = loader.dataset.smiles
@@ -35,10 +35,11 @@ def train_and_save_predictions(loader, preds_path, viz_dir=None):
     pd.DataFrame(list(zip(smiles, ys, preds)), columns=['smiles', 'label', 'prediction']).to_csv(preds_path, index=False)
 
 
+# predict on val data
+print('Evaluation on validation data')
+val_ys, val_preds, val_loss, val_acc, val_auc = train_and_save_predictions(val_loader, preds_path=os.path.join(args.log_dir, 'preds_on_val.csv'), viz_dir=os.path.join(args.viz_dir, 'val_viz'), viz_ids=[1,2,9,10,29,30,3,4,13,14,21,22])
+
+
 # predict on train data
 print('Evaluation on training data')
-train_ys, train_preds, train_loss, train_acc, train_auc = train_and_save_predictions(train_loader, preds_path=os.path.join(args.log_dir, 'preds_on_train.csv'))
-
-# predict on val data
-print('Evaluation on validating data')
-val_ys, val_preds, val_loss, val_acc, val_auc = train_and_save_predictions(val_loader, preds_path=os.path.join(args.log_dir, 'preds_on_val.csv'), viz_dir=os.path.join(args.viz_dir, 'val_viz'))
+train_ys, train_preds, train_loss, train_acc, train_auc = train_and_save_predictions(train_loader, preds_path=os.path.join(args.log_dir, 'preds_on_train.csv'), viz_dir=os.path.join(args.viz_dir, 'train_viz'), viz_ids=[1,2,9,10,29,30,3,4,13,14,21,22])
