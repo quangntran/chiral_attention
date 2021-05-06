@@ -39,10 +39,11 @@ def plot_diagnostics(residuals, variable=0, lags=40, fig=None, figsize=(15,7), s
 
   # Top-left: residuals vs time
   ax = fig.add_subplot(221)
-  if hasattr(self.data, 'dates') and self.data.dates is not None:
-      x = self.data.dates[d:]._mpl_repr()
-  else:
-      x = np.arange(len(resid))
+#  if hasattr(self.data, 'dates') and self.data.dates is not None:
+#      x = self.data.dates[d:]._mpl_repr()
+#  else:
+#      x = np.arange(len(resid))
+  x = np.arange(len(resid))
   ax.plot(x, resid)
   ax.hlines(0, x[0], x[-1], alpha=0.5)
   ax.set_xlim(x[0], x[-1])
