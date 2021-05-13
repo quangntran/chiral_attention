@@ -13,9 +13,12 @@ import csv
 from model.tetra import *
 
 class GCNConv(MessagePassing):
-    def __init__(self, args):
+    def __init__(self, args, custom_hidden_size=None):
         super(GCNConv, self).__init__(aggr='add')
-        self.linear = nn.Linear(args.hidden_size, args.hidden_size)
+        if isinstance(custom_hidden_size, int):
+            self.linear = nn.Linear(custom_hidden_size, args.hidden_size)
+        else:
+            self.linear = nn.Linear(args.hidden_size, args.hidden_size)
         self.batch_norm = nn.BatchNorm1d(args.hidden_size)
         self.tetra = args.tetra
         if self.tetra:

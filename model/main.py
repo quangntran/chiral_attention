@@ -96,15 +96,19 @@ class GNN(nn.Module):
         # layers
         self.convs = torch.nn.ModuleList()
 
-        for _ in range(self.depth):
+        for d in range(self.depth):
+            if args.ft_boost and d>0:
+                custom_hidden_size=args.hidden_size+3
+            else:
+                custom_hidden_size = None
             if self.gnn_type == 'gin':
-                self.convs.append(GINEConv(args))
+                self.convs.append(GINEConv(args, custom_hidden_size=custom_hidden_size))
             elif self.gnn_type == 'gcn':
-                self.convs.append(GCNConv(args))
+                self.convs.append(GCNConv(args, custom_hidden_size=custom_hidden_size))
             elif self.gnn_type == 'dmpnn':
-                self.convs.append(DMPNNConv(args))
+                self.convs.append(DMPNNConv(args, custom_hidden_size=custom_hidden_size))
             elif self.gnn_type == 'orig_dmpnn':
-                self.convs.append(OrigDMPNNConv(args))
+                self.convs.append(OrigDMPNNConv(args, custom_hidden_size=custom_hidden_size))
             else:
                 ValueError('Undefined GNN type called {}'.format(self.gnn_type))
 
@@ -181,8 +185,15 @@ class GNN(nn.Module):
 
         # convolutions
         for l in range(self.depth):
-            x_h, edge_attr_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1], parity_atoms)
-
+            if not self.args.ft_boost:
+                x_h, edge_attr_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1], parity_atoms)
+            else:
+                if l>0:
+                    x_list[-1] = torch.cat((x_list[-1], x_list[0][:,-3:]), 1)
+                    x_h, edge_attr_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1], parity_atoms)
+                else:
+                    x_h, edge_attr_h = self.convs[l](x_list[-1], edge_index, edge_attr_list[-1], parity_atoms)
+                
             h = edge_attr_h if (self.gnn_type == 'dmpnn' or self.gnn_type == 'orig_dmpnn') else x_h
             # print('='*20)
             # print('After DMPNN:')

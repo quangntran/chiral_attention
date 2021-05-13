@@ -61,6 +61,7 @@ def add_train_args(parser: ArgumentParser):
                         help='Use global chiral atom features')
     parser.add_argument('--chiral_features', action='store_true', default=False,
                         help='Use local chiral atom features')
+    parser.add_argument('--ft_boost', action='store_true', default=False, help='whether to concatenate R/S features after each MP layer')
     parser.add_argument('--hidden_size', type=int, default=32,
                         help='Dimensionality of hidden layers')
     parser.add_argument('--depth', type=int, default=2,
