@@ -1,5 +1,7 @@
 # An Attention Graph Neural Network for Stereo-active Molecules
 
+## Introduction
+
 ## Authors
 - Sang T. Truong, DePauw University
 - Quang N. Tran, Minerva Schools at KGI
@@ -25,8 +27,9 @@ To do residual analysis:
 python stereonet/analyze.py --prediction_data_path 'gdrive/My Drive/Colab Notebooks/gcnn/log-s9/viz_best_model' --output_path 'gdrive/My Drive/Colab Notebooks/gcnn/log-s9/viz_best_model'
 ```
 
-## Dependency
-Reinstall PyTorch version:
+## Requirement
+
+PyTorch version:
 ```
 pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
 ```
@@ -55,3 +58,4 @@ pip install torch-spline-conv -f https://pytorch-geometric.com/whl/torch-{TORCH}
 pip install torch-geometric 
 ```
 
+## Acknowledgement
